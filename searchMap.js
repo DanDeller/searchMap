@@ -1,14 +1,14 @@
 var circle     = $('circle'),
-		hideIt     = $(circle).slice(0,11),
-		crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>',
-		pulseIt    = '<span class="pulse"></span>',
-		coords     = [],
-		increment  = 0,
-		state      = window.state,
-		latLine    = window.lat,
-		longLine   = window.long,
-		singleRad  = 4,
-		flag       = true;
+    hideIt     = $(circle).slice(0,11),
+crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>',
+pulseIt    = '<span class="pulse"></span>',
+coords     = [],
+increment  = 0,
+state      = window.state,
+latLine    = window.lat,
+longLine   = window.long,
+singleRad  = 4,
+flag       = true;
 
 // set our viewBox if user selected all states
 (function zoomState() {
@@ -22,13 +22,19 @@ var circle     = $('circle'),
 // attach our crosshair to the map container
 $(crosshair).insertBefore('svg');
 
+// becasue firefox...
+var adjustTop  = flag ? 103 : 112,
+    adjustLeft = flag ? 65 : 55;
+
+if ($.browser.mozilla) {
+	var adjustTop  = flag ? -210 : -199,
+	    adjustLeft = flag ? 144 : 134;
+}
+
 // get coords for first 11 locations
 for (var i = 0; i < 11; i++) {
 
 	// check flag. if true you're on a single state so resize the circles
-	var adjustTop  = flag ? 103 : 113,
-			adjustLeft = flag ? 65 : 55;
-
 	if (!flag) {
 		$(circle[i]).animate({
 		    r: singleRad
@@ -67,7 +73,7 @@ for (var i = 0; i < 11; i++) {
 			});
 
 			//fade in our search box and use custom counter for search bar
-			$('#searching-box').delay(1000).fadeIn(500, function() {
+			$('#searching-box').delay(3000).fadeIn(500, function() {
 				var count,
 					  bar = $('.bar'),
 					  percent = $('<span class="counter" />').appendTo(bar);
