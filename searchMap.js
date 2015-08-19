@@ -72,7 +72,7 @@ for (var i = 0; i < 11; i++) {
 				}, 1000);
 			});
 
-			//fade in our search box and use custom counter for search bar
+			// fade in our search box and use custom counter for search bar
 			$('#searching-box').delay(3000).fadeIn(500, function() {
 				var count,
 				    bar = $('.bar'),
