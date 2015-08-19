@@ -1,14 +1,14 @@
 var circle     = $('circle'),
     hideIt     = $(circle).slice(0,11),
-crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>',
-pulseIt    = '<span class="pulse"></span>',
-coords     = [],
-increment  = 0,
-state      = window.state,
-latLine    = window.lat,
-longLine   = window.long,
-singleRad  = 4,
-flag       = true;
+    crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>',
+    pulseIt    = '<span class="pulse"></span>',
+    coords     = [],
+    increment  = 0,
+    state      = window.state,
+    latLine    = window.lat,
+    longLine   = window.long,
+    singleRad  = 4,
+    flag       = true;
 
 // set our viewBox if user selected all states
 (function zoomState() {
