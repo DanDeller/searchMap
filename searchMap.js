@@ -75,8 +75,8 @@ for (var i = 0; i < 11; i++) {
 			//fade in our search box and use custom counter for search bar
 			$('#searching-box').delay(3000).fadeIn(500, function() {
 				var count,
-					  bar = $('.bar'),
-					  percent = $('<span class="counter" />').appendTo(bar);
+				    bar = $('.bar'),
+				    percent = $('<span class="counter" />').appendTo(bar);
 					
 				var loaderInterval = setInterval(function() {
 					count = Math.round((bar.width() / bar.parent().width()) * 100);
