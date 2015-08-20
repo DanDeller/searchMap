@@ -31,8 +31,8 @@ var tabletSize = $(document).width() <= 872,
     mobileSize = $(document).width() <= 517;
 
 if (tabletSize) {
-	adjustTop  = flag ? 103 : 111,
-	adjustLeft = flag ? 65 : 57;
+	adjustTop  = flag ? 103 : 107,
+	adjustLeft = flag ? 65 : 59;
 }
 
 if (mobileSize) {
