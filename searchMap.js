@@ -1,13 +1,13 @@
-var circle  = $('circle'), // get all svg circles
-    hideIt     = $(circle).slice(0,11), // grab first 11 circles
-    crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
-    pulseIt    = '<span class="pulse"></span>', // create pulse element
-    coords     = [], // create array to stash our circle positions
-    increment  = 0, // initialize an increment count
-    state      = window.state, // grab state
-    latLine    = window.lat, // grab latitude
-    longLine   = window.long, // grab longitude
-    flag       = true; // set flag to determine whether searching for all or a certain state
+var circle    = $('circle'), // get all svg circles
+    hideIt    = $(circle).slice(0,11), // grab first 11 circles
+    crosshair = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
+    pulseIt   = '<span class="pulse"></span>', // create pulse element
+    coords    = [], // create array to stash our circle positions
+    increment = 0, // initialize an increment count
+    state     = window.state, // grab state
+    latLine   = window.lat, // grab latitude
+    longLine  = window.long, // grab longitude
+    flag      = true; // set flag to determine whether searching for all or a certain state
 
 // set our viewBox if user selected all states
 (function zoomState() {
