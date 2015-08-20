@@ -1,14 +1,13 @@
-var circle     = $('circle'),
-    hideIt     = $(circle).slice(0,11),
-    crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>',
-    pulseIt    = '<span class="pulse"></span>',
-    coords     = [],
-    increment  = 0,
-    state      = window.state,
-    latLine    = window.lat,
-    longLine   = window.long,
-    singleRad  = 4,
-    flag       = true;
+var circle  = $('circle'), // get all svg circles
+    hideIt     = $(circle).slice(0,11), // grab first 11 circles
+    crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
+    pulseIt    = '<span class="pulse"></span>', // create pulse element
+    coords     = [], // create array to stash our circle positions
+    increment  = 0, // initialize an increment count
+    state      = window.state, // grab state
+    latLine    = window.lat, // grab latitude
+    longLine   = window.long, // grab longitude
+    flag       = true; // set flag to determine whether searching for all or a certain state
 
 // set our viewBox if user selected all states
 (function zoomState() {
@@ -22,13 +21,29 @@ var circle     = $('circle'),
 // attach our crosshair to the map container
 $(crosshair).insertBefore('svg');
 
-var adjustTop  = flag ? 103 : 112,
-    adjustLeft = flag ? 65 : 55;
+	// check our flag and determine which positions to set
+var adjustTop  = flag ? 103 : 115,
+		adjustLeft = flag ? 65 : 55;
 
-// becasue firefox...
+// sorry all these adjustments...
+// adjust even more for tablet and mobile!
+var tabletSize = $(document).width() <= 872,
+	  mobileSize = $(document).width() <= 517;
+
+if (tabletSize) {
+	adjustTop  = flag ? 103 : 111,
+	adjustLeft = flag ? 65 : 57;
+}
+
+if (mobileSize) {
+	adjustTop  = flag ? 98 : 102,
+	adjustLeft = flag ? 70 : 66;
+}
+
+// HUGE FIREFOX BUG WITH POSITIONING!!!!!!!!!
 if ($.browser.mozilla) {
 	var adjustTop  = flag ? -210 : -199,
-	    adjustLeft = flag ? 144 : 134;
+			adjustLeft = flag ? 200 : 134;
 }
 
 // get coords for first 11 locations
@@ -37,9 +52,9 @@ for (var i = 0; i < 11; i++) {
 	// check flag. if true you're on a single state so resize the circles
 	if (!flag) {
 		$(circle[i]).animate({
-		    r: singleRad
+		    r: 4
 		});
-	} // end if check if flag not set
+	} // end if (!flag)
 
 	// push circles to our coords array and reverse the order
 	coords.push($(circle[i]).position());
@@ -53,7 +68,7 @@ for (var i = 0; i < 11; i++) {
 	$('.crosshair').animate({
 		'top': coords[i].top + adjustTop,
 		'left': coords[i].left - adjustLeft
-	}, 550, function() {
+	}, 600, function() {
 
 		increment++;
 
@@ -69,14 +84,14 @@ for (var i = 0; i < 11; i++) {
 				// set a quick timeout to delay the start of our circle loaders
 				setTimeout(function() {
 					startRadialLoader($('.radial-loader').first());
-				}, 1000);
+				}, 3000);
 			});
 
-			// fade in our search box and use custom counter for search bar
+			//fade in our search box and use custom counter for search bar
 			$('#searching-box').delay(3000).fadeIn(500, function() {
 				var count,
-				    bar = $('.bar'),
-				    percent = $('<span class="counter" />').appendTo(bar);
+					  bar = $('.bar'),
+					  percent = $('<span class="counter" />').appendTo(bar);
 					
 				var loaderInterval = setInterval(function() {
 					count = Math.round((bar.width() / bar.parent().width()) * 100);
@@ -102,19 +117,6 @@ for (var i = 0; i < 11; i++) {
 				onComplete   : navigateToResults
 			});
 				
-		} // end if
+		} // end if (increment === 11)
 	}); // end crosshair animate
 } // end for loop
-
-// grab our circle x and y positions
-// $('circle').on('click', function(ev) {
-// 	var svgPos = $('svg').position(),
-// 	x = svgPos.left + parseInt($(ev.target).attr('cx')),
-// 	y = svgPos.top + parseInt($(ev.target).attr('cy')),
-// 	svgcoords = [x, y];
-// });
-
-// // fire click event on circles
-// setTimeout(function() {
-// 	$('circle').trigger('click');
-// }, 1000);
