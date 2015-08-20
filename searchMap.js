@@ -21,14 +21,14 @@ var circle  = $('circle'), // get all svg circles
 // attach our crosshair to the map container
 $(crosshair).insertBefore('svg');
 
-	// check our flag and determine which positions to set
+// check our flag and determine which positions to set
 var adjustTop  = flag ? 103 : 115,
-		adjustLeft = flag ? 65 : 55;
+    adjustLeft = flag ? 65 : 55;
 
 // sorry all these adjustments...
-// adjust even more for tablet and mobile!
+// but adjust even more for tablet and mobile!
 var tabletSize = $(document).width() <= 872,
-	  mobileSize = $(document).width() <= 517;
+    mobileSize = $(document).width() <= 517;
 
 if (tabletSize) {
 	adjustTop  = flag ? 103 : 111,
@@ -43,7 +43,7 @@ if (mobileSize) {
 // HUGE FIREFOX BUG WITH POSITIONING!!!!!!!!!
 if ($.browser.mozilla) {
 	var adjustTop  = flag ? -210 : -199,
-			adjustLeft = flag ? 200 : 134;
+	    adjustLeft = flag ? 200 : 134;
 }
 
 // get coords for first 11 locations
