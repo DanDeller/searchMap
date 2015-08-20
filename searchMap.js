@@ -107,14 +107,14 @@ for (var i = 0; i < 11; i++) {
 } // end for loop
 
 // grab our circle x and y positions
-$('circle').on('click', function(ev) {
-	var svgPos = $('svg').position(),
-	x = svgPos.left + parseInt($(ev.target).attr('cx')),
-	y = svgPos.top + parseInt($(ev.target).attr('cy')),
-	svgcoords = [x, y];
-});
+// $('circle').on('click', function(ev) {
+// 	var svgPos = $('svg').position(),
+// 	x = svgPos.left + parseInt($(ev.target).attr('cx')),
+// 	y = svgPos.top + parseInt($(ev.target).attr('cy')),
+// 	svgcoords = [x, y];
+// });
 
-// fire click event on circles
-setTimeout(function() {
-	$('circle').trigger('click');
-}, 1000);
+// // fire click event on circles
+// setTimeout(function() {
+// 	$('circle').trigger('click');
+// }, 1000);
