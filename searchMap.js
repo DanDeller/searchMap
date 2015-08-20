@@ -22,10 +22,10 @@ var circle     = $('circle'),
 // attach our crosshair to the map container
 $(crosshair).insertBefore('svg');
 
-// becasue firefox...
 var adjustTop  = flag ? 103 : 112,
     adjustLeft = flag ? 65 : 55;
 
+// becasue firefox...
 if ($.browser.mozilla) {
 	var adjustTop  = flag ? -210 : -199,
 	    adjustLeft = flag ? 144 : 134;
