@@ -104,20 +104,20 @@ for (var i = 0; i < 11; i++) {
 				});
 
 				// start progress bar
-				// $('#main-loader .progress-bar, .search-right .progress-bar').ICM_ProgressBar({
-				// 	autoStart    : true,
-				// 	timer        : loaderTimer,
-				// 	onComplete   : navigateToResults
-				// });
+				$('#main-loader .progress-bar, .search-right .progress-bar').ICM_ProgressBar({
+					autoStart    : true,
+					timer        : loaderTimer,
+					onComplete   : navigateToResults
+				});
 
 				// create counter for progress bar
 				var count,
-					  bar = $('.bar');
+				    bar = $('.bar');
 				var loaderInterval = setInterval(function() {
 					var counter = $('.counter'),
-							count   = Math.round((bar.width() / bar.parent().width()) * 100),
-							tab     = $('.tab'),
-							tabText = $('.tab p');
+					    count   = Math.round((bar.width() / bar.parent().width()) * 100),
+					    tab     = $('.tab'),
+					    tabText = $('.tab p');
 					$(counter).text(count + '%');
 					if (count == 99) {
 						clearInterval(loaderInterval);
