@@ -175,22 +175,12 @@ for (var i = 0; i < 11; i++) {
 
 // make some quick sliders for testimonials
 function startTestimonials() {
-	if ($('.slider li:first-child').next('li').length > 0) {
-    setTimeout(function() {
-      $('.slider li.active').removeClass('active').next('li').addClass('active');
-      startTestimonials();
-      $('.slider li:first-child').appendTo($('.slider'));
-    }, 6000);
-  }
-}
-
-// make some quick sliders for testimonials dots
-function startSlideCount() {
-	if ($('.slide-count li:first-child').next('li').length > 0) {
-    setTimeout(function() {
-      $('.slide-count li.active').removeClass('active2').next('li').addClass('active2');
-      startSlideCount();
-      $('.slide-count li:first-child').appendTo($('.slide-count'));
-    }, 6000);
-  }
+	if ($('.slider li:first-child').next('li').length > 0 && $('.slide-count li:first-child').next('li').length > 0) {
+		setTimeout(function() {
+			$('.slider li.active, .slide-count li.active').removeClass('active active2').next('li').addClass('active active2');
+			startTestimonials();
+			$('.slider li:first-child').appendTo($('.slider'));
+			$('.slide-count li:first-child').appendTo($('.slide-count'));
+	        }, 6000);
+  	}
 }
