@@ -1,51 +1,57 @@
-var circle     = $('circle').slice(0,11), // grab first 11 circles
-    crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
-    pulseIt    = '<span class="pulse"></span>', // create pulse element
-    coords     = [], // create array to stash our circle positions
-    increment  = 0, // initialize an increment count
-    state      = window.state, // grab state
-    latLine    = window.lat, // grab latitude
-    longLine   = window.long, // grab longitude
-    flag       = true; // set flag to determine whether searching for all or a certain state
+// --------------------------------------------------
+// SEARCH MAP JS
+// Read SVG positions on map and plot out points with a crosshair		
 
-// set our viewBox if user selected all states
+var circle     = $('circle').slice(0,10), // grab first 10 circles
+		crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
+		pulseIt    = '<span class="pulse"></span>', // create pulse element
+		coords     = [], // create array to stash our circle positions
+		increment  = 0, // initialize an increment count
+		state      = window.state, // grab state
+		latLine    = window.lat, // grab latitude
+		longLine   = window.long, // grab longitude
+		flag       = true; // set flag to determine whether searching for all or a certain state
+
+// -----------------------------------------------------------
+// SET OUR VIEWBOX AND OTHER DEFAULT SIZES BASED OFF OF FLAG
+
 (function zoomState() {
 	if (state === 'ALL') {
 		$('.map svg').each(function(){$(this)[0].setAttribute('viewBox','-149 100 1200 100')});
 	} else {
 		flag = false;
 	}
-})(state); // end zoomState(state)
+})(state);
 
 // attach our crosshair to the map container
 $(crosshair).insertBefore('.map svg');
 
 // check our flag and determine which positions to set
-var adjustTop  = flag ? 103 : 115,
-    adjustLeft = flag ? 65 : 55;
+var adjustTop  = flag ? 65 : 52,
+		adjustLeft = flag ? 65 : 53;
 
 // sorry all these adjustments...
 // adjust even more for tablet and mobile!
 var tabletSize = $(document).width() <= 872,
-    mobileSize = $(document).width() <= 517;
+	  mobileSize = $(document).width() <= 517;
 
 if (tabletSize) {
-	adjustTop  = flag ? 103 : 107,
-	adjustLeft = flag ? 65 : 59;
+	adjustTop  = flag ? 66 : 57,
+	adjustLeft = flag ? 67 : 58;
 }
 
 if (mobileSize) {
-	adjustTop  = flag ? 98 : 102,
-	adjustLeft = flag ? 70 : 66;
+	adjustTop  = flag ? 70 : 69,
+	adjustLeft = flag ? 70 : 69;
 }
 
-// HUGE FIREFOX BUG WITH POSITIONING!!!!!!!!!
-if ($.browser.mozilla) {
-	var adjustTop  = flag ? -210 : -199,
-	    adjustLeft = flag ? 200 : 134;
-}
+// END SET OUR VIEWBOX AND OTHER DEFAULT SIZES BASED OFF OF FLAG
+// -----------------------------------------------------------
 
-// trim tab text one mobile screens
+
+// -----------------------------------------------------------
+// CHANGE TEXT FOR MOBILE VIEWERS
+
 if ($(document).width() < 700) {
 	$('.county-text').text('county');
 	$('.state-text').text('state');
@@ -53,19 +59,22 @@ if ($(document).width() < 700) {
 	$('.online-text').text('online');
 }
 
-// get coords for first 11 locations
-for (var i = 0; i < 11; i++) {
+// END CHANGE TEXT FOR MOBILE VIEWERS
+// -----------------------------------------------------------
+
+
+// -----------------------------------------------------------
+// GET COORDS FOR FIRST 10 CIRCLES AND PLOT THEM
+
+for (var i = 0; i < 10; i++) {
 
 	// check flag. if true you're on a single state so resize the circles
 	if (!flag) {
-		$(circle[i]).animate({
-		    r: 4
-		});
-	} // end if (!flag)
+		$(circle[i]).attr('r','4');
+	}
 
 	// push circles to our coords array and reverse the order
-	coords.push($(circle[i]).position());
-	coords.reverse();
+	coords.push($(circle[i]).offset());
 
 	// hide all circles, fade in our crosshair, and fade in the first 11 circles
 	$('.crosshair').fadeIn();
@@ -73,114 +82,144 @@ for (var i = 0; i < 11; i++) {
 
 	// plot our crosshair coordinates and set callback to add additional functionality
 	$('.crosshair').animate({
-		'top': coords[i].top + adjustTop,
-		'left': coords[i].left - adjustLeft
+		'top': (coords[i].top - $('#map-container').offset().top) - adjustTop,
+		'left': (coords[i].left - $('#map-container').offset().left) - adjustLeft
 	}, 600, function() {
 
 		increment++;
 
-		if (increment === 11) {
+		if (increment === 10) {
+			startSearchBox();		
+		}
 
-			$(this).append(pulseIt);
-
-			// position crosshair over top result position
-			$('.crosshair').animate({
-				'top': coords[9].top + adjustTop,
-				'left': coords[9].left - adjustLeft
-			}, 600, function() {
-				// set a quick timeout to delay the start of our circle loaders
-				setTimeout(function() {
-					startRadialLoader($('.radial-loader').first());
-				}, 3000);
-			});
-
-			//fade in our search box and set up counter for search bar
-			$('#searching-box').delay(3000).fadeIn(500, function() {
-		
-				// start mugshot scroller
-				$('#scroller').ICM_MugshotScroller({
-					count: frameCount,
-					speed: 75
-				});
-
-				// start progress bar
-				$('#main-loader .progress-bar, .search-right .progress-bar').ICM_ProgressBar({
-					autoStart    : true,
-					timer        : loaderTimer,
-					onComplete   : navigateToResults
-				});
-
-				// create counter for progress bar
-				var count,
-				    bar = $('.bar');
-				var loaderInterval = setInterval(function() {
-					var counter = $('.counter'),
-					    count   = Math.round((bar.width() / bar.parent().width()) * 100),
-					    tab     = $('.tab'),
-					    tabText = $('.tab p');
-					$(counter).text(count + '%');
-					if (count == 99) {
-						clearInterval(loaderInterval);
-						$(counter).remove();
-					}
-
-					// check counter and change tab styles
-					if (count == 1) {
-						mobileSize ? $('.counter-box').removeClass('open') : $('.counter-box').addClass('open');
-						$('.tab-icon.county').addClass('county-active');
-						$(tabText[0]).addClass('active');
-					}
-					if (count == 25) {
-						$(tab[0]).addClass('active-background');
-						$('.tab-icon.state').addClass('state-active');
-						$(tabText[1]).addClass('active');
-					}
-					if (count == 50) {
-						$(tab[1]).addClass('active-background');
-						$('.tab-icon.federal').addClass('federal-active');
-						$(tabText[2]).addClass('active');
-					}
-					if (count == 75) {
-						$(tab[2]).addClass('active-background');
-						$('.tab-icon.online').addClass('online-active');
-						$(tabText[3]).addClass('active');
-					}
-					if (count == 95) {
-						$(tab[3]).addClass('active-background');
-						$('.tab-icon.online').addClass('online-active');
-						$(tabText[3]).addClass('active');
-					}
-
-					// move our counter box along with the progress bar
-					$('.counter-box').css({'left' : count - 2 + '%'});
-				}, 10);
-
-				//reshape our svg loaders
-				$('.svg2 circle').animate({
-				  r: 96,
-				});	
-				$('.svg3 circle').animate({
-				  r: 66,
-				});
-
-				// start our testimony and count lsider
-				startTestimonials();
-				startSlideCount();
-
-			}); // end fadeIn search box
-				
-		} // end if (increment === 11)
 	}); // end crosshair animate
 } // end for loop
 
-// make some quick sliders for testimonials
+// END GET COORDS FOR FIRST 11 CIRCLES AND PLOT THEM
+// -----------------------------------------------------------
+
+
+// -----------------------------------------------------------
+// CALLBACK FUNCTION - called once increment count hits 10
+
+function startSearchBox() {
+	$('.crosshair').append(pulseIt);
+
+	// position crosshair over top result position
+	$('.crosshair').animate({
+		'top': (coords[0].top - $('#map-container').offset().top) - adjustTop,
+		'left': (coords[0].left - $('#map-container').offset().left) - adjustLeft
+	}, 600, function() {
+		// set a quick timeout to delay the start of our circle loaders
+		setTimeout(function() {
+			startRadialLoader($('.radial-loader').first());
+		}, 3000);
+	});
+
+	//fade in our search box and set up counter for search bar
+	$('#searching-box').delay(3000).fadeIn(500, function() {
+
+		// start mugshot scroller
+		$('#scroller').ICM_MugshotScroller({
+			count: frameCount,
+			speed: 75
+		});
+
+		// start progress bar
+		$('#main-loader .progress-bar, .search-right .progress-bar').ICM_ProgressBar({
+			autoStart    : true,
+			timer        : loaderTimer,
+			onComplete   : navigateToResults
+		});
+
+		// create counter for progress bar
+		var count,
+			  bar = $('.bar');
+		var loaderInterval = setInterval(function() {
+			var counter = $('.counter'),
+					count   = Math.round((bar.width() / bar.parent().width()) * 100),
+					tab     = $('.tab'),
+					tabText = $('.tab p');
+			$(counter).text(count + '%');
+			if (count == 99) {
+				clearInterval(loaderInterval);
+				$(counter).remove();
+			}
+
+			var activeUrl = '/assets/themes/deboot/img/searching/' + state + '-active.png';
+
+			// check counter and change tab styles
+			if (count == 1) {
+				mobileSize ? $('.counter-box').removeClass('open') : $('.counter-box').addClass('open');
+				$('.tab-icon.county').addClass('county-active');
+				$(tabText[0]).addClass('active');
+			}
+			if (count == 25) {
+				$(tab[0]).addClass('active-background');
+				$('.tab-icon.state').css({'background' : 'url(' + activeUrl + ')'});
+				// $('.tab-icon.state').addClass('state-active');
+				$(tabText[1]).addClass('active');
+			}
+			if (count == 50) {
+				$(tab[1]).addClass('active-background');
+				$('.tab-icon.federal').addClass('federal-active');
+				$(tabText[2]).addClass('active');
+			}
+			if (count == 75) {
+				$(tab[2]).addClass('active-background');
+				$('.tab-icon.online').addClass('online-active');
+				$(tabText[3]).addClass('active');
+			}
+			if (count == 95) {
+				$(tab[3]).addClass('active-background');
+				$('.tab-icon.online').addClass('online-active');
+				$(tabText[3]).addClass('active');
+			}
+
+			// move our counter box along with the progress bar
+			$('.counter-box').css({'left' : count - 2 + '%'});
+		}, 10);
+
+		//reshape our svg loaders
+		$('.svg2 circle').attr('r', '96');
+		$('.svg3 circle').attr('r', '66');
+
+		// start our testimony and count lsider
+		startTestimonials();
+		setStateIcon(state);
+
+	}); // end fadeIn search box
+};
+
+// END CALLBACK FUNCTION
+// -----------------------------------------------------------
+
+
+// -----------------------------------------------------------
+// START TESTIMONIAL SLIDER - called in callback function
+
 function startTestimonials() {
 	if ($('.slider li:first-child').next('li').length > 0 && $('.slide-count li:first-child').next('li').length > 0) {
-		setTimeout(function() {
-			$('.slider li.active, .slide-count li.active').removeClass('active active2').next('li').addClass('active active2');
-			startTestimonials();
-			$('.slider li:first-child').appendTo($('.slider'));
-			$('.slide-count li:first-child').appendTo($('.slide-count'));
-	        }, 6000);
-  	}
+    setTimeout(function() {
+      $('.slider li.active, .slide-count li.active').removeClass('active active2').next('li').addClass('active active2');
+      startTestimonials();
+      $('.slider li:first-child').appendTo($('.slider'));
+      $('.slide-count li:first-child').appendTo($('.slide-count'));
+    }, 6000);
+  }
 }
+
+// END START TESTIMONIAL SLIDER
+// -----------------------------------------------------------
+
+
+// -----------------------------------------------------------
+// SET STATE ICON
+function setStateIcon(state) {
+	var stateIcon = $('.tab-icon.state');
+	var stateUrl  = '/assets/themes/deboot/img/searching/' + state + '.svg';
+	$(stateIcon).css({'background' : 'url(' + stateUrl + ')'});
+}
+
+// END SET STATE ICON
+// -----------------------------------------------------------
