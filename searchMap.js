@@ -183,7 +183,7 @@ function startSearchBox() {
 		$('.svg2 circle').attr('r', '96');
 		$('.svg3 circle').attr('r', '66');
 
-		// start our testimony and count lsider
+		// start our testimony and count slider and set state background
 		startTestimonials();
 		setStateIcon(state);
 
