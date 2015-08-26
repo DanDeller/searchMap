@@ -214,6 +214,7 @@ function startTestimonials() {
 
 // -----------------------------------------------------------
 // SET STATE ICON
+
 function setStateIcon(state) {
 	var stateIcon = $('.tab-icon.state');
 	var stateUrl  = '/assets/themes/deboot/img/searching/' + state + '.svg';
