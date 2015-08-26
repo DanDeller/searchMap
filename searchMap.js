@@ -2,15 +2,15 @@
 // SEARCH MAP JS
 // Read SVG positions on map and plot out points with a crosshair		
 
-var circle     = $('circle').slice(0,10), // grab first 10 circles
-		crosshair  = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
-		pulseIt    = '<span class="pulse"></span>', // create pulse element
-		coords     = [], // create array to stash our circle positions
-		increment  = 0, // initialize an increment count
-		state      = window.state, // grab state
-		latLine    = window.lat, // grab latitude
-		longLine   = window.long, // grab longitude
-		flag       = true; // set flag to determine whether searching for all or a certain state
+var circle    = $('circle').slice(0,10), // grab first 10 circles
+    crosshair = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
+    pulseIt   = '<span class="pulse"></span>', // create pulse element
+    coords    = [], // create array to stash our circle positions
+    increment = 0, // initialize an increment count
+    state     = window.state, // grab state
+    latLine   = window.lat, // grab latitude
+    longLine  = window.long, // grab longitude
+    flag      = true; // set flag to determine whether searching for all or a certain state
 
 // -----------------------------------------------------------
 // SET OUR VIEWBOX AND OTHER DEFAULT SIZES BASED OFF OF FLAG
@@ -28,12 +28,11 @@ $(crosshair).insertBefore('.map svg');
 
 // check our flag and determine which positions to set
 var adjustTop  = flag ? 65 : 52,
-		adjustLeft = flag ? 65 : 53;
+    adjustLeft = flag ? 65 : 53;
 
-// sorry all these adjustments...
 // adjust even more for tablet and mobile!
 var tabletSize = $(document).width() <= 872,
-	  mobileSize = $(document).width() <= 517;
+    mobileSize = $(document).width() <= 517;
 
 if (tabletSize) {
 	adjustTop  = flag ? 66 : 57,
