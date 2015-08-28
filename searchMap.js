@@ -30,7 +30,6 @@ $(crosshair).insertBefore('.map svg');
 var adjustTop  = flag ? 65 : 52,
     adjustLeft = flag ? 65 : 53;
 
-// sorry all these adjustments...
 // adjust even more for tablet and mobile!
 var tabletSize = $(document).width() <= 872,
     mobileSize = $(document).width() <= 517;
