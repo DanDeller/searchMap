@@ -30,18 +30,25 @@ $(crosshair).insertBefore('.map svg');
 var adjustTop  = flag ? 65 : 52,
     adjustLeft = flag ? 65 : 53;
 
+// sorry all these adjustments...
 // adjust even more for tablet and mobile!
 var tabletSize = $(document).width() <= 872,
     mobileSize = $(document).width() <= 517;
 
 if (tabletSize) {
-	adjustTop  = flag ? 66 : 57,
-	adjustLeft = flag ? 67 : 58;
+	adjustTop  = flag ? 66 : 63,
+	adjustLeft = flag ? 67 : 64;
 }
 
 if (mobileSize) {
 	adjustTop  = flag ? 70 : 69,
 	adjustLeft = flag ? 70 : 69;
+}
+
+// adjust a bit more for ff and safari
+if ($.browser.safari || $.browser.mozilla) {
+	adjustTop  = flag ? 65 : 61,
+	adjustLeft = flag ? 65 : 61;
 }
 
 // END SET OUR VIEWBOX AND OTHER DEFAULT SIZES BASED OFF OF FLAG
@@ -124,59 +131,68 @@ function startSearchBox() {
 			speed: 75
 		});
 
-		// start progress bar
-		$('#main-loader .progress-bar, .search-right .progress-bar').ICM_ProgressBar({
+		// start progress bars
+		$('#main-loader .progress-bar').ICM_ProgressBar({
 			autoStart    : true,
 			timer        : loaderTimer,
 			onComplete   : navigateToResults
 		});
 
+		$('.search-right .progress-bar').ICM_ProgressBar({
+			autoStart    : true,
+			timer        : loaderTimer,
+			onComplete   : function() {
+				$(this).parent().find('span').css({'color' : 'green'});
+			}
+		});
+
 		// create counter for progress bar
 		var count,
-		    bar = $('.bar');
+		    bar = $('.bar'),
+		    activeUrl = '/assets/themes/deboot/img/searching/states-active/' + state + '-active.svg';
+
 		var loaderInterval = setInterval(function() {
 			var counter = $('.counter'),
 			    count   = Math.round((bar.width() / bar.parent().width()) * 100),
 			    tab     = $('.tab'),
 			    tabText = $('.tab p');
+
 			$(counter).text(count + '%');
+
 			if (count == 99) {
 				clearInterval(loaderInterval);
 				$(counter).remove();
+				$('.counter-box').removeClass('open');
 			}
-
-			var activeUrl = '/assets/themes/deboot/img/searching/' + state + '-active.png';
 
 			// check counter and change tab styles
 			if (count == 1) {
+				// if we're on a mobile sized screen hide the counter
 				mobileSize ? $('.counter-box').removeClass('open') : $('.counter-box').addClass('open');
-				$('.tab-icon.county').addClass('county-active');
 				$(tabText[0]).addClass('active');
+				$('.tab-icon.county').addClass('county-active');
 			}
 			if (count == 25) {
 				$(tab[0]).addClass('active-background');
-				$('.tab-icon.state').css({'background' : 'url(' + activeUrl + ')'});
-				// $('.tab-icon.state').addClass('state-active');
 				$(tabText[1]).addClass('active');
+				$('.tab-icon.state').css({'background' : 'url(' + activeUrl + ')'});
 			}
 			if (count == 50) {
 				$(tab[1]).addClass('active-background');
-				$('.tab-icon.federal').addClass('federal-active');
 				$(tabText[2]).addClass('active');
+				$('.tab-icon.federal').addClass('federal-active');
 			}
 			if (count == 75) {
 				$(tab[2]).addClass('active-background');
-				$('.tab-icon.online').addClass('online-active');
 				$(tabText[3]).addClass('active');
+				$('.tab-icon.online').addClass('online-active');
 			}
 			if (count == 95) {
 				$(tab[3]).addClass('active-background');
-				$('.tab-icon.online').addClass('online-active');
-				$(tabText[3]).addClass('active');
 			}
 
 			// move our counter box along with the progress bar
-			$('.counter-box').css({'left' : count - 2 + '%'});
+			$('.counter-box').css({'left' : (count - 2) + '%'});
 		}, 10);
 
 		//reshape our svg loaders
@@ -200,12 +216,15 @@ function startSearchBox() {
 function startTestimonials() {
 	if ($('.slider li:first-child').next('li').length > 0 && $('.slide-count li:first-child').next('li').length > 0) {
     		setTimeout(function() {
-      			$('.slider li.active, .slide-count li.active').removeClass('active active2').next('li').addClass('active active2');
-      			startTestimonials();
-			$('.slider li:first-child').appendTo($('.slider'));
-			$('.slide-count li:first-child').appendTo($('.slide-count'));
-    		}, 6000);
-  	}
+	        	$('.slider li.active, .slide-count li.active')
+	      		.removeClass('active active2')
+		      	.next('li')
+		      	.addClass('active active2');
+	      		startTestimonials();
+		        $('.slider li:first-child').appendTo($('.slider'));
+		        $('.slide-count li:first-child').appendTo($('.slide-count'));
+	    	}, 10000);
+	}
 }
 
 // END START TESTIMONIAL SLIDER
@@ -216,9 +235,8 @@ function startTestimonials() {
 // SET STATE ICON
 
 function setStateIcon(state) {
-	var stateIcon = $('.tab-icon.state');
-	var stateUrl  = '/assets/themes/deboot/img/searching/' + state + '.svg';
-	$(stateIcon).css({'background' : 'url(' + stateUrl + ')'});
+	var stateUrl = '/assets/themes/deboot/img/searching/states/' + state + '.svg';
+	$('.tab-icon.state').css({'background' : 'url(' + stateUrl + ')'});
 }
 
 // END SET STATE ICON
