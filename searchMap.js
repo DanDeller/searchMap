@@ -30,6 +30,7 @@ $(crosshair).insertBefore('.map svg');
 var adjustTop  = flag ? 65 : 52,
     adjustLeft = flag ? 65 : 53;
 
+// sorry all these adjustments...
 // adjust even more for tablet and mobile!
 var tabletSize = $(document).width() <= 872,
     mobileSize = $(document).width() <= 517;
@@ -46,8 +47,10 @@ if (mobileSize) {
 
 // adjust a bit more for ff and safari
 if ($.browser.safari || $.browser.mozilla) {
-	adjustTop  = flag ? 65 : 61,
-	adjustLeft = flag ? 65 : 61;
+	if (!mobileSize || !tabletSize) {
+		adjustTop  = flag ? 65 : 61,
+		adjustLeft = flag ? 65 : 61;
+	}
 }
 
 // END SET OUR VIEWBOX AND OTHER DEFAULT SIZES BASED OFF OF FLAG
@@ -147,14 +150,14 @@ function startSearchBox() {
 
 		// create counter for progress bar
 		var count,
-		    bar = $('.bar'),
-		    activeUrl = '/assets/themes/deboot/img/searching/states-active/' + state + '-active.svg';
+			  bar = $('.bar'),
+		 		activeUrl = '/assets/themes/deboot/img/searching/states-active/' + state + '-active.svg';
 
 		var loaderInterval = setInterval(function() {
 			var counter = $('.counter'),
-			    count   = Math.round((bar.width() / bar.parent().width()) * 100),
-			    tab     = $('.tab'),
-			    tabText = $('.tab p');
+					count   = Math.round((bar.width() / bar.parent().width()) * 100),
+					tab     = $('.tab'),
+					tabText = $('.tab p');
 
 			$(counter).text(count + '%');
 
@@ -212,18 +215,18 @@ function startSearchBox() {
 // -----------------------------------------------------------
 // START TESTIMONIAL SLIDER - called in callback function
 
-function startTestimonials() {
+	function startTestimonials() {
 	if ($('.slider li:first-child').next('li').length > 0 && $('.slide-count li:first-child').next('li').length > 0) {
-    		setTimeout(function() {
-	        	$('.slider li.active, .slide-count li.active')
-	      		.removeClass('active active2')
-		      	.next('li')
-		      	.addClass('active active2');
-	      		startTestimonials();
-		        $('.slider li:first-child').appendTo($('.slider'));
-		        $('.slide-count li:first-child').appendTo($('.slide-count'));
-	    	}, 10000);
-	}
+    setTimeout(function() {
+      $('.slider li.active, .slide-count li.active')
+      	.removeClass('active active2')
+      	.next('li')
+      	.addClass('active active2');
+      startTestimonials();
+      $('.slider li:first-child').appendTo($('.slider'));
+      $('.slide-count li:first-child').appendTo($('.slide-count'));
+    }, 10000);
+  }
 }
 
 // END START TESTIMONIAL SLIDER
