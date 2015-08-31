@@ -150,14 +150,14 @@ function startSearchBox() {
 
 		// create counter for progress bar
 		var count,
-			  bar = $('.bar'),
-		 		activeUrl = '/assets/themes/deboot/img/searching/states-active/' + state + '-active.svg';
+		    bar = $('.bar'),
+		    activeUrl = '/assets/themes/deboot/img/searching/states-active/' + state + '-active.svg';
 
 		var loaderInterval = setInterval(function() {
 			var counter = $('.counter'),
-					count   = Math.round((bar.width() / bar.parent().width()) * 100),
-					tab     = $('.tab'),
-					tabText = $('.tab p');
+			    count   = Math.round((bar.width() / bar.parent().width()) * 100),
+			    tab     = $('.tab'),
+			    tabText = $('.tab p');
 
 			$(counter).text(count + '%');
 
@@ -215,18 +215,18 @@ function startSearchBox() {
 // -----------------------------------------------------------
 // START TESTIMONIAL SLIDER - called in callback function
 
-	function startTestimonials() {
+function startTestimonials() {
 	if ($('.slider li:first-child').next('li').length > 0 && $('.slide-count li:first-child').next('li').length > 0) {
-    setTimeout(function() {
-      $('.slider li.active, .slide-count li.active')
-      	.removeClass('active active2')
-      	.next('li')
-      	.addClass('active active2');
-      startTestimonials();
-      $('.slider li:first-child').appendTo($('.slider'));
-      $('.slide-count li:first-child').appendTo($('.slide-count'));
-    }, 10000);
-  }
+    		setTimeout(function() {
+      			$('.slider li.active, .slide-count li.active')
+		      	.removeClass('active active2')
+		      	.next('li')
+		      	.addClass('active active2');
+		        startTestimonials();
+		        $('.slider li:first-child').appendTo($('.slider'));
+		        $('.slide-count li:first-child').appendTo($('.slide-count'));
+    		}, 10000);
+  	}
 }
 
 // END START TESTIMONIAL SLIDER
