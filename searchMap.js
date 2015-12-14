@@ -8,8 +8,6 @@ var circle    = $('circle').slice(0,10), // grab first 10 circles
     coords    = [], // create array to stash our circle positions
     increment = 0, // initialize an increment count
     state     = window.state, // grab state
-    latLine   = window.lat, // grab latitude
-    longLine  = window.long, // grab longitude
     flag      = true; // set flag to determine whether searching for all or a certain state
 
 // -----------------------------------------------------------
@@ -51,7 +49,7 @@ if ($(document).width() < 700) {
 // -----------------------------------------------------------
 // GET COORDS FOR FIRST 10 CIRCLES AND PLOT THEM
 
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 9; i++) {
 
 	// check flag. if true you're on a single state so resize the circles
 	if (!flag) {
