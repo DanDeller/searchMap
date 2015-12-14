@@ -30,29 +30,6 @@ $(crosshair).insertBefore('.map svg');
 var adjustTop  = flag ? 65 : 52,
     adjustLeft = flag ? 65 : 53;
 
-// sorry all these adjustments...
-// adjust even more for tablet and mobile!
-var tabletSize = $(document).width() <= 872,
-    mobileSize = $(document).width() <= 517;
-
-if (tabletSize) {
-	adjustTop  = flag ? 66 : 63,
-	adjustLeft = flag ? 67 : 64;
-}
-
-if (mobileSize) {
-	adjustTop  = flag ? 70 : 69,
-	adjustLeft = flag ? 70 : 69;
-}
-
-// adjust a bit more for ff and safari
-if ($.browser.safari || $.browser.mozilla) {
-	if (!mobileSize || !tabletSize) {
-		adjustTop  = flag ? 65 : 61,
-		adjustLeft = flag ? 65 : 61;
-	}
-}
-
 // END SET OUR VIEWBOX AND OTHER DEFAULT SIZES BASED OFF OF FLAG
 // -----------------------------------------------------------
 
