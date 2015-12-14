@@ -59,7 +59,7 @@ for (var i = 0; i < 9; i++) {
 	// push circles to our coords array and reverse the order
 	coords.push($(circle[i]).offset());
 
-	// hide all circles, fade in our crosshair, and fade in the first 11 circles
+	// hide all circles, fade in our crosshair, and fade in the first 10 circles
 	$('.crosshair').fadeIn();
 	$(circle[i]).hide().delay(700 * i).fadeIn(500).css({'fill':'#fff'});
 
