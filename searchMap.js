@@ -83,7 +83,7 @@ for (var i = 0; i < 9; i++) {
 
 
 // -----------------------------------------------------------
-// CALLBACK FUNCTION - called once increment count hits 10
+// CALLBACK FUNCTION - called once increment count hits 9
 
 function startSearchBox() {
 	$('.crosshair').append(pulseIt);
