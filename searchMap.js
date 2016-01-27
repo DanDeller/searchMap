@@ -71,7 +71,7 @@ for (var i = 0; i < 9; i++) {
 
 		increment++;
 
-		if (increment === 10) {
+		if (increment === 9) {
 			startSearchBox();		
 		}
 
