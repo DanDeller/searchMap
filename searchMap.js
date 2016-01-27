@@ -2,7 +2,7 @@
 // SEARCH MAP JS
 // Read SVG positions on map and plot out points with a crosshair		
 
-var circle    = $('circle').slice(0,10), // grab first 10 circles
+var circle    = $('circle').slice(0,9), // grab first 10 circles
     crosshair = '<div class="crosshair"><span class="x-axis"></span><span class="y-axis"></span></div>', // create crosshair element
     pulseIt   = '<span class="pulse"></span>', // create pulse element
     coords    = [], // create array to stash our circle positions
