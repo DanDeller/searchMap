@@ -78,7 +78,7 @@ for (var i = 0; i < 9; i++) {
 	}); // end crosshair animate
 } // end for loop
 
-// END GET COORDS FOR FIRST 11 CIRCLES AND PLOT THEM
+// END GET COORDS FOR FIRST 10 CIRCLES AND PLOT THEM
 // -----------------------------------------------------------
 
 
